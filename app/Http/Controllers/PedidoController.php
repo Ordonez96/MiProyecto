@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pedido;
 use App\Models\Usuario;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class PedidoController extends Controller
 {
@@ -65,8 +65,15 @@ class PedidoController extends Controller
     // 9. Pedidos agrupados por usuario
     public function pedidosAgrupados()
     {
-        return Pedido::select('producto', 'cantidad', 'total', 'id_usuario')
-                     ->groupBy('id_usuario', 'producto', 'cantidad', 'total')
-                     ->get();
+        $pedidos = Pedido::select('id_usuario', 'producto', 'cantidad', 'total')
+                         ->get();
+    
+        // Agrupar por usuario
+        $pedidosAgrupados = $pedidos->groupBy('id_usuario');
+    
+        return $pedidosAgrupados;
     }
+    
+    
+    
 }
